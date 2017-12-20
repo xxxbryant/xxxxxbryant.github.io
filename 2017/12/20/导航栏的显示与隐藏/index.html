@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives: 2017/12 | XXXZQBryant&#39;s BLOG</title>
+  <title>XXXZQBryant&#39;s BLOG</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -59,7 +59,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -166,108 +166,66 @@
         <!-- ============================ Header & Logo bar =========================== -->
 
 
-      <!-- ============================ Hero Image =========================== -->
-
-<section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/MyGirl.JPG) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2>I LOVE THIS GIRL, SHE IS MY LIFE.</h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-
-                    </div>
-                </div>
-            </div>
-            <!-- // .col-md-12 -->
-        </div>
-        <div class="herofade beige-dk"></div>
-    </div>
-</section>
-
-<!-- Height spacing helper -->
-<div class="heightblock"></div>
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
-
-
-
-
-<section id="services">
+      
+<section id="intro">
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/20/Push-Pop/">Push &amp; Pop</a></h4>
-                            
-                            <p><time datetime="2017-12-20T06:29:11.000Z"><a href="/2017/12/20/Push-Pop/">2017-12-20</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/20/导航栏的显示与隐藏/"></a></h4>
-                            
-                            <p><time datetime="2017-12-20T05:07:23.000Z"><a href="/2017/12/20/导航栏的显示与隐藏/">2017-12-20</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/20/GCD/"></a></h4>
-                            
-                            <p><time datetime="2017-12-20T01:14:14.000Z"><a href="/2017/12/20/GCD/">2017-12-20</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/19/GCD-NSOperation/">GCD &amp; NSOperation</a></h4>
-                            
-                            <p><time datetime="2017-12-19T08:48:30.000Z"><a href="/2017/12/19/GCD-NSOperation/">2017-12-19</a></time></p>
-                        </div>
-                    
-                        
-                            </div><div class="row boxes">
-                            
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/19/KVO/">KVO</a></h4>
-                            
-                            <p><time datetime="2017-12-19T08:46:09.000Z"><a href="/2017/12/19/KVO/">2017-12-19</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2017-12-20T05:07:23.000Z" itemprop="datePublished">
+          2017-12-20
+      </time>
+    
+</span>
+                <h1></h1>
+            </div>
         </div>
-    </div>
-</section> 
+        <div class="col-md-8 col-md-offset-2">
+      		<h1 id="导航栏相关"><a href="#导航栏相关" class="headerlink" title="导航栏相关"></a>导航栏相关</h1><p>##</p>
+<p>几点改动：<br>1.继承UINavigationController创建HDNavigationViewController，几个RootVC的导航栏都使用DNavigationViewController。重写UINavigationController的push方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated &#123;</span><br><span class="line">    if (self.childViewControllers.count==1) &#123;</span><br><span class="line">        viewController.hidesBottomBarWhenPushed = YES; //viewController是将要被push的控制器</span><br><span class="line">    &#125;</span><br><span class="line">    [super pushViewController:viewController animated:animated];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样写保证从RootVCpush的时候，将tabbar隐藏掉。不必再每次要push到下一个页面的时候都写<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.tabBarController.tabBar.hidden = YES;</span><br></pre></td></tr></table></figure></p>
+<p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">viewController.hidesBottomBarWhenPushed = YES; //viewController是将要被push的控制器</span><br></pre></td></tr></table></figure></p>
+<p>2.为了实现侧滑返回的功能，因为自定义导航栏如果修改了leftBarButtonItem，或者将导航栏隐藏，那么将会导致侧滑失效，所以需要加上一句话，恢复侧滑功能。 这句话写到基类控制器的- viewWillAppear方法里面即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br></pre></td></tr></table></figure></p>
+<p>3.为了不让pop代理失效，如果导航栏左侧的只是一个返回按钮，那么可以修改导航栏的backBarButtonItem来修改。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController.navigationBar setBackIndicatorImage:[UIImage imageNamed:@&quot;nav_back&quot;]];</span><br><span class="line">  [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@&quot;nav_back&quot;]];</span><br><span class="line">  UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@&quot;&quot; style:UIBarButtonItemStylePlain target:nil action:nil];</span><br><span class="line">  self.navigationItem.backBarButtonItem = backItem;</span><br></pre></td></tr></table></figure>
+<p>3.因为有一些界面的导航栏差异性较大，项目中通常做法是，将导航栏隐藏，然后自定义一个符合要求的view来作为导航栏。如果使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.navigationBarHidden = YES;</span><br></pre></td></tr></table></figure></p>
+<p>这样的效果能够满足需求，但是如果加入了侧滑手势之后，在侧滑返回的时候，就会出现一个黑条<br>为了解决这个问题，可在基类的- viewWillDisappear方法中，添加下面这句代码即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br></pre></td></tr></table></figure></p>
+<p>保证返回时隐藏。 同时由于页面较为复杂可能存在多种push情况，例如<br><img src="http://upload-images.jianshu.io/upload_images/4039772-481066596c6e4a80.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>A-&gt;B需要在AB的- viewWillAppear方法设置<br>[self.navigationController setNavigationBarHidden:YES animated:YES];<br>B-&gt;D 同A-B<br>B-&gt;E 需要在E的- viewWillAppear方法中设置<br>[self.navigationController setNavigationBarHidden:NO animated:YES];</p>
+<p>A’-&gt;B 需要在A’的 viewWillAppear方法中设置<br>[self.navigationController setNavigationBarHidden:NO animated:YES];<br>在B的- viewWillAppear方法设置<br>[self.navigationController setNavigationBarHidden:YES animated:YES];</p>
+<p>A’-C则什么都不需要设置，或者设置为<br>self.navigationController setNavigationBarHidden:NO animated:YES];</p>
+<p>所以我想的是在基类中，添加一个BOOL属性为是否显示导航栏，如果需要隐藏某个VC，那么在该VC的viewdidload方法中将此BOOL属性置为YES。在基类中的- viewWillAppear方法中可以这样写，_isHideNav就是该BOOL属性。同时为了解决pop手势失效的问题，可在隐藏导航栏的地方将代理设置一下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (_isHideNav) &#123;</span><br><span class="line">       [self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">       self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">       [self.navigationController setNavigationBarHidden:NO animated:animated];</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中animated涉及到push与pop时的过渡动画效果是否显示。<br>如果<br>[self.navigationController setNavigationBarHidden:YES animated:NO]; 那么从<br>显示 pop 隐藏 ，显示 push 隐藏    时会有黑色的条。即提前消失。 其他情况无异常。</p>
+<p>如果<br>[self.navigationController setNavigationBarHidden:NO animated:NO]; 那么从<br>隐藏 pop 显示 ，隐藏 push 显示  时导航条会提前显示出来。</p>
+<p>还有一个问题：如果将某一个页面的导航条设置为透明，就会有一些奇怪的东西。push到透明的条时，会突然变黑。</p>
+<p>研究的过程中，发现的问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">self.navigationController.navigationBar.hidden = YES;</span><br></pre></td></tr></table></figure></p>
+<p>这两句话什么区别？</p>
+<p>一个是针对导航栏的，一个是针对NavigationBar的。隐藏导航栏会导致侧滑手势失效，隐藏NavigationBar则不会导致侧滑手势失效。另外，<br>self.navigationController setNavigationBarHidden:NO animated:YES]; 这个方法还做了一些更多的操作。</p>
 
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>失败是成功之母,努力是成功之父。</p>
+            <div class="clearfix"></div>
+            <hr class="nogutter">
         </div>
+        <nav class="pagination" role="pagination">
+    
+    <a class="pull-left" href="/2017/12/20/Push-Pop/" style="float: left;">
+        ← Push & Pop
+    </a>
+    
+    
+    <a class="pull-right" href="/2017/12/20/GCD/">
+         →
+    </a>
+    
+</nav>
+
+        <div class="duoshuo">
+
+
+</div>
     </div>
 </section>
+
+
       
 <!-- ============================ Footer =========================== -->
 

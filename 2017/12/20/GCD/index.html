@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives: 2017/12 | XXXZQBryant&#39;s BLOG</title>
+  <title>XXXZQBryant&#39;s BLOG</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -59,7 +59,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -166,108 +166,62 @@
         <!-- ============================ Header & Logo bar =========================== -->
 
 
-      <!-- ============================ Hero Image =========================== -->
-
-<section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/MyGirl.JPG) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2>I LOVE THIS GIRL, SHE IS MY LIFE.</h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-
-                    </div>
-                </div>
-            </div>
-            <!-- // .col-md-12 -->
-        </div>
-        <div class="herofade beige-dk"></div>
-    </div>
-</section>
-
-<!-- Height spacing helper -->
-<div class="heightblock"></div>
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
-
-
-
-
-<section id="services">
+      
+<section id="intro">
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/20/Push-Pop/">Push &amp; Pop</a></h4>
-                            
-                            <p><time datetime="2017-12-20T06:29:11.000Z"><a href="/2017/12/20/Push-Pop/">2017-12-20</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/20/导航栏的显示与隐藏/"></a></h4>
-                            
-                            <p><time datetime="2017-12-20T05:07:23.000Z"><a href="/2017/12/20/导航栏的显示与隐藏/">2017-12-20</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/20/GCD/"></a></h4>
-                            
-                            <p><time datetime="2017-12-20T01:14:14.000Z"><a href="/2017/12/20/GCD/">2017-12-20</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/19/GCD-NSOperation/">GCD &amp; NSOperation</a></h4>
-                            
-                            <p><time datetime="2017-12-19T08:48:30.000Z"><a href="/2017/12/19/GCD-NSOperation/">2017-12-19</a></time></p>
-                        </div>
-                    
-                        
-                            </div><div class="row boxes">
-                            
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/12/19/KVO/">KVO</a></h4>
-                            
-                            <p><time datetime="2017-12-19T08:46:09.000Z"><a href="/2017/12/19/KVO/">2017-12-19</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2017-12-20T01:14:14.000Z" itemprop="datePublished">
+          2017-12-20
+      </time>
+    
+</span>
+                <h1></h1>
+            </div>
         </div>
-    </div>
-</section> 
+        <div class="col-md-8 col-md-offset-2">
+      		<h2 id="串行与并行"><a href="#串行与并行" class="headerlink" title="串行与并行"></a>串行与并行</h2><p>串行队列与并行队列的实质，串行队列会对应一个线程，线程会按照先进先出的原则依次执行队列中的任务；并行队列中的任务会被多个线程来同时执行。在GCD中由GCD中枢来做调度派发线程去执行任务，给串行队列派发一个线程，给并行队列派发多个线程。</p>
+<p>##同步与异步：<br>同步与异步的本质：是否会阻塞当前线程。同步会阻塞当前线程；异步不会阻塞当前线程，会开启一个新的线程去执行代码。在代码块中，执行到sync时，当前代码所在的线程被阻塞，等待sync任务执行完毕，而遇到async时，当前代码所在线程不会被阻塞，任务被放到子线程中执行。</p>
+<h1 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a>GCD</h1><h2 id="Group"><a href="#Group" class="headerlink" title="Group"></a>Group</h2><p>创建一个组，将不同的队列放到其中，队列中的任务并发执行。当所有任务执行完毕以后，使用notify来通知执行完毕，然后处理。 </p>
+<blockquote>
+<p>队列可以是多个队列，如果是一个串行队列，那么使用组就没有意义了，目的是为了并发执行，但是只有一个串行队列就没有意义了。</p>
+</blockquote>
+<h2 id="dispatch-once-创建单例"><a href="#dispatch-once-创建单例" class="headerlink" title="dispatch_once 创建单例"></a>dispatch_once 创建单例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+ (Manager *)sharedInstance &#123;</span><br><span class="line">    static Person *p = nil;</span><br><span class="line">    static dispatch_once_t once;</span><br><span class="line">    dispatch_once($once, ^&#123;</span><br><span class="line">        p = [[Person alloc] init];</span><br><span class="line">    &#125;);</span><br><span class="line">    return p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="barrier"><a href="#barrier" class="headerlink" title="barrier"></a>barrier</h2><p>一组异步并行任务，使用dispatch_async_barrier 做插入，该任务会等待前面的任务执行完成以后就去执行，然后再执行后面的任务。async的区别与sync的区别就在于是否阻塞当前线程</p>
+<p>##apply<br>多次执行一组任务，这些任务的区别差别很小，只有index的区分，不必要创建多个async的任务。</p>
+<h2 id="信号量semaphore"><a href="#信号量semaphore" class="headerlink" title="信号量semaphore"></a>信号量semaphore</h2><p>就是一种可用来控制访问资源的数量的标识，设定了一个信号量，在线程访问之前，加上信号量的处理，则可告知系统按照我们指定的信号量数量来执行多个线程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"> //crate的value表示，最多几个资源可访问</span><br><span class="line">    dispatch_semaphore_t semaphore = dispatch_semaphore_create(2);   </span><br><span class="line">    dispatch_queue_t quene = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line">     </span><br><span class="line">    //任务1</span><br><span class="line">    dispatch_async(quene, ^&#123;</span><br><span class="line">        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);// 对信号量进行判读，如果&gt;=1那么可以执行然后进行减一操作，如果信号量&lt;1，那么不执行，直到信号量&gt;=1</span><br><span class="line">        NSLog(@&quot;run task 1&quot;);</span><br><span class="line">        sleep(1);</span><br><span class="line">        NSLog(@&quot;complete task 1&quot;);</span><br><span class="line">        dispatch_semaphore_signal(semaphore);    信号量进行加一操作  </span><br><span class="line">    &#125;);&lt;br&gt;</span><br><span class="line">    //任务2</span><br><span class="line">    dispatch_async(quene, ^&#123;</span><br><span class="line">        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);</span><br><span class="line">        NSLog(@&quot;run task 2&quot;);</span><br><span class="line">        sleep(1);</span><br><span class="line">        NSLog(@&quot;complete task 2&quot;);</span><br><span class="line">        dispatch_semaphore_signal(semaphore);       </span><br><span class="line">    &#125;);&lt;br&gt;</span><br><span class="line">    //任务3</span><br><span class="line">    dispatch_async(quene, ^&#123;</span><br><span class="line">        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);</span><br><span class="line">        NSLog(@&quot;run task 3&quot;);</span><br><span class="line">        sleep(1);</span><br><span class="line">        NSLog(@&quot;complete task 3&quot;);</span><br><span class="line">        dispatch_semaphore_signal(semaphore);       </span><br><span class="line">    &#125;);   </span><br><span class="line"> ``` </span><br><span class="line">利用信号量的知识，可以做到，将一个异步的任务，做到同步处理。</span><br><span class="line">例如在一个页面中，有多个网络请求，需要多个网络请求同时请求完毕以后，再去执行UI绘制，但是无法知晓这几个异步请求合适完成，故而可以使用信号量，讲每个请求都封装成一个同步任务。</span><br></pre></td></tr></table></figure></p>
+<p> dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);<br> networkRequest : successBlock{<br>        dispatch_semaphore_signal(semaphore);<br>}) failureBlock{<br>        dispatch_semaphore_signal(semaphore);<br>}<br>dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);  // 只有当走完成功或者失败以后才会执行后面的代码。<br>```<br>然后讲多个任务请求都用信号量处理，然后将其放到组队列中，当全部完成时，notify函数便可以执行。</p>
+<h1 id="NSOperation"><a href="#NSOperation" class="headerlink" title="NSOperation"></a>NSOperation</h1><p>NSOperation 可以用于创建一个任务，所创建的任务可以被取消。<br>NSOperation是一个基类，有两种子类NSBlockOperation，NSInvocationOperation一种是Block的形式一种是target，action的形式。<br>NSOperation创建的任务会被默认的添加到主线程当中去。然后start这个任务。<br>NSOperation有三种属性isExecuted、isFinished和 isCancelled，可以通过KVO进行属性的观察。<br>NSOperationQueue可以设置最大并发数，如果最大并发数设置为1，那么就被放到主线程中执行，如果大于一那么就会开启子线程。<br>如果手动创建队列，那么[queue addOperation:operation]会自动帮助start这个任务。<br>任务之间可以添加依赖，如果互相依赖那么就会造成死锁</p>
+<p>#NSOperation与GCD的区别与使用</p>
+<blockquote>
+<p>GCD更加轻量级。是C语言的API。而NSOperation是OC对象，是对GCD的封装，所以可以通过KVO机制监听一个NSOperation对象的状态，监听是否完成或者取消。<br>NSOperation可以随时取消已经执行的任务，而GCD可以取消或者挂起某个队列<br>NSOperation可以设置依赖关系，让一个operation依赖于另一个operation<br>NSOperation可以设置任务的优先级，而GCD可以设置队列的优先级<br>自定义一个NSOperation类。添加一些属性与方法，可以有更高的自由度</p>
+</blockquote>
 
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>失败是成功之母,努力是成功之父。</p>
+            <div class="clearfix"></div>
+            <hr class="nogutter">
         </div>
+        <nav class="pagination" role="pagination">
+    
+    <a class="pull-left" href="/2017/12/20/导航栏的显示与隐藏/" style="float: left;">
+        ← 
+    </a>
+    
+    
+    <a class="pull-right" href="/2017/12/19/GCD-NSOperation/">
+        GCD & NSOperation →
+    </a>
+    
+</nav>
+
+        <div class="duoshuo">
+
+
+</div>
     </div>
 </section>
+
+
       
 <!-- ============================ Footer =========================== -->
 

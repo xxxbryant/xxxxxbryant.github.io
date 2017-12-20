@@ -181,7 +181,7 @@
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		<p>##串行与并行：<br>串行队列与并行队列的实质，串行队列会对应一个线程，线程会按照先进先出的原则依次执行队列中的任务；并行队列中的任务会被多个线程来同时执行。在GCD中由GCD中枢来做调度派发线程去执行任务，给串行队列派发一个线程，给并行队列派发多个线程。</p>
+      		<h2 id="串行与并行："><a href="#串行与并行：" class="headerlink" title="串行与并行："></a>串行与并行：</h2><p>串行队列与并行队列的实质，串行队列会对应一个线程，线程会按照先进先出的原则依次执行队列中的任务；并行队列中的任务会被多个线程来同时执行。在GCD中由GCD中枢来做调度派发线程去执行任务，给串行队列派发一个线程，给并行队列派发多个线程。</p>
 <p>##同步与异步：<br>同步与异步的本质：是否会阻塞当前线程。同步会阻塞当前线程；异步不会阻塞当前线程，会开启一个新的线程去执行代码。在代码块中，执行到sync时，当前代码所在的线程被阻塞，等待sync任务执行完毕，而遇到async时，当前代码所在线程不会被阻塞，任务被放到子线程中执行。</p>
 <h1 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a>GCD</h1><h2 id="Group"><a href="#Group" class="headerlink" title="Group"></a>Group</h2><p>创建一个组，将不同的队列放到其中，队列中的任务并发执行。当所有任务执行完毕以后，使用notify来通知执行完毕，然后处理。</p>
 <blockquote>
@@ -203,6 +203,10 @@
             <hr class="nogutter">
         </div>
         <nav class="pagination" role="pagination">
+    
+    <a class="pull-left" href="/2017/12/20/GCD/" style="float: left;">
+        ← 
+    </a>
     
     
     <a class="pull-right" href="/2017/12/19/KVO/">
