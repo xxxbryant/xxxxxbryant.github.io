@@ -132,7 +132,7 @@
                             <li><a href="/" class="animsition-link">XXXZQBryant's BLOG</a></li>
                             <li class="nolink"><span>Always </span>Creative.</li>
                             
-                            <li><a href="https://github.com/" title="Github" target="_blank"><i class="icon-github"></i></a></li>
+                            <li><a href="https://github.com/xxxbryant/" title="Github" target="_blank"><i class="icon-github"></i></a></li>
                             
                             
                             <li><a href="https://twitter.com/" title="Twitter" target="_blank"><i class="icon-twitter"></i></a></li>
@@ -175,11 +175,11 @@
                 <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
                     <div>
                         
-                        <h2>I LOVE THIS GIRL, SHE IS MY LIFE.</h2>
+                        <h2>Stay Foolish Stay Hungry</h2>
                         <p></p>
                         
                         <h2></h2>
-                        <p></p>
+                        <p>I LOVE THIS GIRL, SHE IS MY LIFE.</p>
                         
 
                     </div>
@@ -204,11 +204,11 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/12/20/Push-Pop/">Push & Pop</a></h3>
+                    <h3><a href="/2017/12/25/iOS基础-Push-Pop/">iOS基础-Push&Pop</a></h3>
                     <span>
                         <span class="post-meta">
-      <time datetime="2017-12-20T06:29:11.000Z" itemprop="datePublished">
-          2017-12-20
+      <time datetime="2017-12-25T06:25:56.000Z" itemprop="datePublished">
+          2017-12-25
       </time>
     
 </span>
@@ -217,13 +217,18 @@
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        导航栏相关##
-几点改动：1.继承UINavigationController创建HDNavigationViewController，几个RootVC的导航栏都使用DNavigationViewController。重写UINavigationController的push方法123456- (void)pushViewController:(UIViewController *)viewController animated:(BO
+                        Push &amp; Pop在研究自定义导航栏时，发现的这一系列问题。
+
+项目中一些不太好的写法改正  
+侧滑返回手势失效的问题 
+Push &amp; Pop 动画效果异常的问题
+
+项目中一些代码的改正1.通常在一个项目中，是需要自定义一个导航栏的基类来管理导航栏的。所以：继承UINavigationController创建HDNavigationViewController，几个TabbarVC的导航栏都使用HDNavigation
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/12/20/Push-Pop/">Read More...</a>
+                        <a href="/2017/12/25/iOS基础-Push-Pop/">Read More...</a>
                     </p>
                     
                 </div>
@@ -235,11 +240,11 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/12/19/GCD-NSOperation/">GCD & NSOperation</a></h3>
+                    <h3><a href="/2017/12/25/写此博客的目的/">写此博客的目的</a></h3>
                     <span>
                         <span class="post-meta">
-      <time datetime="2017-12-19T08:48:30.000Z" itemprop="datePublished">
-          2017-12-19
+      <time datetime="2017-12-25T03:35:00.000Z" itemprop="datePublished">
+          2017-12-25
       </time>
     
 </span>
@@ -248,45 +253,14 @@
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        串行与并行：串行队列与并行队列的实质，串行队列会对应一个线程，线程会按照先进先出的原则依次执行队列中的任务；并行队列中的任务会被多个线程来同时执行。在GCD中由GCD中枢来做调度派发线程去执行任务，给串行队列派发一个线程，给并行队列派发多个线程。
-##同步与异步：同步与异步的本质：是否会阻塞当前线程。同步会阻塞当前线程；异步不会阻塞当前线程，会开启一个新的线程去执行代码。在代码块中，执行到sync时，当前代码所在的线程被阻塞，等待syn
+                        序一直都想建个博客来写一些东西，迟迟没有动手。之前写的一些文章都放在了简书里面，但都没有发布。现在个人博客建立好了，还花钱买了一个域名。既然花了钱，那就好好的利用这个工具，写一些实在的东西。
+我并不是很擅长写作，高中时期的作文得分通常都较低，到现在，基本上很少写作，有时候甚至写一个句子，不知道如何表达，或者病句连篇。希望通过写博客，能提高自己这方面的能力吧。
+在这里，记录学习iOS的点点滴滴，把以前总结的优化一下，然后搬运到此，希望能够
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/12/19/GCD-NSOperation/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2017/12/19/KVO/">KVO</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-12-19T08:46:09.000Z" itemprop="datePublished">
-          2017-12-19
-      </time>
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        ###key-value observing 是观察者设计模式的一种实现。
-KVO提供一种观察机制，指定一个被观察对象，当对象某个属性发生更改时，对象会获得通知，并作出相应处理，比较适合model与view之间的通信。KVO实现主要也是依赖于OC的Runtime机制。
-当观察某个对象A时，KVO机制动态创建一个对象A当前类的子类，并为这个新的子类重写了被观察者属性keyPath的setter方法，setter方法随后负责同志观察对象属性
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2017/12/19/KVO/">Read More...</a>
+                        <a href="/2017/12/25/写此博客的目的/">Read More...</a>
                     </p>
                     
                 </div>
@@ -324,7 +298,7 @@ KVO提供一种观察机制，指定一个被观察对象，当对象某个属�
             <div class="social">
                 <ul>
                     
-                    <li><a href="https://github.com/" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
+                    <li><a href="https://github.com/xxxbryant/" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
                     
                     
                     <li><a href="https://twitter.com/" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>&nbsp;</li>

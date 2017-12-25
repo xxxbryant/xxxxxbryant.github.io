@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Push &amp; Pop | XXXZQBryant&#39;s BLOG</title>
+  <title>iOS基础-Push&amp;Pop | XXXZQBryant&#39;s BLOG</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -132,7 +132,7 @@
                             <li><a href="/" class="animsition-link">XXXZQBryant's BLOG</a></li>
                             <li class="nolink"><span>Always </span>Creative.</li>
                             
-                            <li><a href="https://github.com/" title="Github" target="_blank"><i class="icon-github"></i></a></li>
+                            <li><a href="https://github.com/xxxbryant/" title="Github" target="_blank"><i class="icon-github"></i></a></li>
                             
                             
                             <li><a href="https://twitter.com/" title="Twitter" target="_blank"><i class="icon-twitter"></i></a></li>
@@ -172,35 +172,64 @@
         <div class="row col-md-offset-2">
             <div class="col-md-8">
     			<span class="post-meta">
-      <time datetime="2017-12-20T06:29:11.000Z" itemprop="datePublished">
-          2017-12-20
+      <time datetime="2017-12-25T06:25:56.000Z" itemprop="datePublished">
+          2017-12-25
       </time>
     
 </span>
-                <h1>Push & Pop</h1>
+                <h1>iOS基础-Push&Pop</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		<h1 id="导航栏相关"><a href="#导航栏相关" class="headerlink" title="导航栏相关"></a>导航栏相关</h1><p>##</p>
-<p>几点改动：<br>1.继承UINavigationController创建HDNavigationViewController，几个RootVC的导航栏都使用DNavigationViewController。重写UINavigationController的push方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated &#123;</span><br><span class="line">if (self.childViewControllers.count==1) &#123;</span><br><span class="line">viewController.hidesBottomBarWhenPushed = YES; //viewController是将要被push的控制器</span><br><span class="line">&#125;</span><br><span class="line">[super pushViewController:viewController animated:animated];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+      		<h1 id="Push-amp-Pop"><a href="#Push-amp-Pop" class="headerlink" title="Push &amp; Pop"></a>Push &amp; Pop</h1><p>在研究自定义导航栏时，发现的这一系列问题。</p>
+<ul>
+<li>项目中一些不太好的写法改正  </li>
+<li>侧滑返回手势失效的问题 </li>
+<li>Push &amp; Pop 动画效果异常的问题</li>
+</ul>
+<h2 id="项目中一些代码的改正"><a href="#项目中一些代码的改正" class="headerlink" title="项目中一些代码的改正"></a>项目中一些代码的改正</h2><p>1.通常在一个项目中，是需要自定义一个导航栏的基类来管理导航栏的。所以：继承UINavigationController创建HDNavigationViewController，几个TabbarVC的导航栏都使用HDNavigationViewController。重写UINavigationController的push方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated &#123;</span><br><span class="line">	if (self.childViewControllers.count==1) &#123;</span><br><span class="line">		viewController.hidesBottomBarWhenPushed = YES; //viewController是将要被push的控制器</span><br><span class="line">	&#125;</span><br><span class="line">	[super pushViewController:viewController animated:animated];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>这样写保证从RootVCpush的时候，将tabbar隐藏掉。不必再每次要push到下一个页面的时候都写<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.tabBarController.tabBar.hidden = YES;</span><br></pre></td></tr></table></figure></p>
 <p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">viewController.hidesBottomBarWhenPushed = YES; //viewController是将要被push的控制器</span><br></pre></td></tr></table></figure></p>
-<p>2.为了实现侧滑返回的功能，因为自定义导航栏如果修改了leftBarButtonItem，或者将导航栏隐藏，那么将会导致侧滑失效，所以需要加上一句话，恢复侧滑功能。 这句话写到基类控制器的- viewWillAppear方法里面即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br></pre></td></tr></table></figure></p>
-<p>3.为了不让pop代理失效，如果导航栏左侧的只是一个返回按钮，那么可以修改导航栏的backBarButtonItem来修改。</p>
+<h2 id="侧滑返回手势失效的问题"><a href="#侧滑返回手势失效的问题" class="headerlink" title="侧滑返回手势失效的问题"></a>侧滑返回手势失效的问题</h2><p>在导航栏中，如果自定义导航栏并且修改了leftBarButtonItem，或者将导航栏隐藏，那么将会导致侧滑返回失效，为了解决这一问题，可在基类控制器的- viewWillAppear方法里面中将侧滑手势的代理重新设置为当前VC即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br></pre></td></tr></table></figure></p>
+<p>但这样会带来一些问题，稍后再说这个问题，先说如果不采用这种方式，该如何恢复侧滑返回手势。</p>
+<ul>
+<li>为了不让pop代理失效，如果导航栏左侧的只是一个返回按钮，那么可以修改导航栏的backBarButtonItem来修改。</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController.navigationBar setBackIndicatorImage:[UIImage imageNamed:@&quot;nav_back&quot;]];</span><br><span class="line">[self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@&quot;nav_back&quot;]];</span><br><span class="line">UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@&quot;&quot; style:UIBarButtonItemStylePlain target:nil action:nil];</span><br><span class="line">self.navigationItem.backBarButtonItem = backItem;</span><br></pre></td></tr></table></figure>
-<p>3.因为有一些界面的导航栏差异性较大，项目中通常做法是，将导航栏隐藏，然后自定义一个符合要求的view来作为导航栏。如果使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.navigationBarHidden = YES;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>某些需要导航栏隐藏的界面可以选择使用，只将navigationBar隐藏，而不是整个导航栏。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.navigationBar.hidden = YES;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>上面两种方式，虽然可以实现侧滑返回，但都有一些局限性或者无法实现需求。下面将介绍，如何使用leftBarButtonItem或者隐藏导航栏同时不让侧滑手势失效，即解决设置导航栏手势代理所带来的一些问题。</p>
+<h3 id="设置手势代理的问题"><a href="#设置手势代理的问题" class="headerlink" title="设置手势代理的问题"></a>设置手势代理的问题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br></pre></td></tr></table></figure>
+<p>如果在基类VC中设置这个导航栏，那么处于根控制器下的VC也具有右滑手势，但因为是根控制器，所以没有手势无效，但如果在改控制器视图下，在边缘区域右滑，那么将造成页面卡死状态，无法再点击其他内容，按下home键以后再重新打开，会出现各种奇怪的bug。为了解决这一问题，就需要将根视图的手势给去掉。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line">    if (self == [self.navigationController.viewControllers firstObject]) &#123;</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.enabled = NO;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.enabled = YES;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在基类中，判断是否是根控制器，如果是，那么禁止该手势否则打开。</p>
+<h2 id="Push-amp-Pop-动画效果异常的问题"><a href="#Push-amp-Pop-动画效果异常的问题" class="headerlink" title="Push &amp; Pop 动画效果异常的问题"></a>Push &amp; Pop 动画效果异常的问题</h2><p>1.因为有一些界面的导航栏差异性较大，我的通常做法是，将导航栏隐藏，然后自定义一个符合要求的view来作为导航栏的navigationBar。如果使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.navigationBarHidden = YES;</span><br></pre></td></tr></table></figure>
 <p>这样的效果能够满足需求，但是如果加入了侧滑手势之后，在侧滑返回的时候，就会出现一个黑条<br>为了解决这个问题，可在基类的- viewWillDisappear方法中，添加下面这句代码即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br></pre></td></tr></table></figure></p>
 <p>保证返回时隐藏。 同时由于页面较为复杂可能存在多种push情况，例如<br><img src="http://upload-images.jianshu.io/upload_images/4039772-481066596c6e4a80.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>A-&gt;B需要在AB的- viewWillAppear方法设置<br>[self.navigationController setNavigationBarHidden:YES animated:YES];<br>B-&gt;D 同A-B<br>B-&gt;E 需要在E的- viewWillAppear方法中设置<br>[self.navigationController setNavigationBarHidden:NO animated:YES];</p>
 <p>A’-&gt;B 需要在A’的 viewWillAppear方法中设置<br>[self.navigationController setNavigationBarHidden:NO animated:YES];<br>在B的- viewWillAppear方法设置<br>[self.navigationController setNavigationBarHidden:YES animated:YES];</p>
 <p>A’-C则什么都不需要设置，或者设置为<br>self.navigationController setNavigationBarHidden:NO animated:YES];</p>
-<p>所以我想的是在基类中，添加一个BOOL属性为是否显示导航栏，如果需要隐藏某个VC，那么在该VC的viewdidload方法中将此BOOL属性置为YES。在基类中的- viewWillAppear方法中可以这样写，_isHideNav就是该BOOL属性。同时为了解决pop手势失效的问题，可在隐藏导航栏的地方将代理设置一下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (_isHideNav) &#123;</span><br><span class="line">[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">[self.navigationController setNavigationBarHidden:NO animated:animated];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>所以我想的是在基类中，添加一个BOOL属性为是否显示导航栏，如果需要隐藏某个VC，那么在该VC的viewdidload方法中将此BOOL属性置为YES。在基类中的- viewWillAppear方法中可以这样写，_isHideNav就是该BOOL属性。同时为了解决pop手势失效的问题，可在隐藏导航栏的地方将代理设置一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (_isHideNav) &#123;</span><br><span class="line">	[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">	[self.navigationController setNavigationBarHidden:NO animated:animated];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其中animated涉及到push与pop时的过渡动画效果是否显示。<br>如果<br>[self.navigationController setNavigationBarHidden:YES animated:NO]; 那么从<br>显示 pop 隐藏 ，显示 push 隐藏    时会有黑色的条。即提前消失。 其他情况无异常。</p>
 <p>如果<br>[self.navigationController setNavigationBarHidden:NO animated:NO]; 那么从<br>隐藏 pop 显示 ，隐藏 push 显示  时导航条会提前显示出来。</p>
-<p>还有一个问题：如果将某一个页面的导航条设置为透明，就会有一些奇怪的东西。push到透明的条时，会突然变黑。</p>
-<p>研究的过程中，发现的问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">self.navigationController.navigationBar.hidden = YES;</span><br></pre></td></tr></table></figure></p>
+<h3 id="透明导航栏的处理（未完待续）"><a href="#透明导航栏的处理（未完待续）" class="headerlink" title="透明导航栏的处理（未完待续）"></a>透明导航栏的处理（未完待续）</h3><p>还有一个问题：如果将某一个页面的导航条设置为透明，就会有一些奇怪的东西。push到透明的条时，会突然变黑。或Pop时突然出现，为了解决这个问题，可以利用方法交换，交换滑动的进度方法，在此拦截进度，将透明度变换设置为渐变的效果。 </p>
+<h3 id="一些发现"><a href="#一些发现" class="headerlink" title="一些发现"></a>一些发现</h3><p>研究的过程中，发现的问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">self.navigationController.navigationBar.hidden = YES;</span><br></pre></td></tr></table></figure></p>
 <p>这两句话什么区别？</p>
 <p>一个是针对导航栏的，一个是针对NavigationBar的。隐藏导航栏会导致侧滑手势失效，隐藏NavigationBar则不会导致侧滑手势失效。另外，<br>self.navigationController setNavigationBarHidden:NO animated:YES]; 这个方法还做了一些更多的操作。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如何做到兼顾隐藏导航栏保持侧滑返回手势，以及良好的切换动画效果。 在基类控制器中写上如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewWillAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewWillAppear:animated];</span><br><span class="line">    if (_isHideNav) &#123;</span><br><span class="line">        [self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        [self.navigationController setNavigationBarHidden:NO animated:animated];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)viewDidAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line">    if (self == [self.navigationController.viewControllers firstObject]) &#123;</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.enabled = NO;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.enabled = YES;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果某个VC需要隐藏导航栏，只需要将设置_isHideNav属性为YES即可。</p>
+<h2 id="思考🤔"><a href="#思考🤔" class="headerlink" title="思考🤔"></a>思考🤔</h2><ul>
+<li>利用方法交换，更改手势，无需重新设置 </li>
+</ul>
+<p>self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</p>
+<ul>
+<li>透明度渐变式的过渡动画</li>
+</ul>
 
             <div class="clearfix"></div>
             <hr class="nogutter">
@@ -208,8 +237,8 @@
         <nav class="pagination" role="pagination">
     
     
-    <a class="pull-right" href="/2017/12/19/GCD-NSOperation/">
-        GCD & NSOperation →
+    <a class="pull-right" href="/2017/12/25/写此博客的目的/">
+        写此博客的目的 →
     </a>
     
 </nav>
@@ -236,7 +265,7 @@
             <div class="social">
                 <ul>
                     
-                    <li><a href="https://github.com/" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
+                    <li><a href="https://github.com/xxxbryant/" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
                     
                     
                     <li><a href="https://twitter.com/" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>&nbsp;</li>
