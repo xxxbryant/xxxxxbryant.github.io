@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>XXXZQBryant&#39;s BLOG</title>
+  <title>推送自定义语音播报 | XXXZQBryant&#39;s BLOG</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -166,16 +166,11 @@
       </time>
     
 </span>
-                <h1></h1>
+                <h1>推送自定义语音播报</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		<hr>
-<p>title: 推送自定义语音播报<br>date: 2018-01-04 16:57:37</p>
-<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><ul>
-<li><strong>实现微信收款的播报功能</strong></li>
-</ul>
-<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>1.iOS 10以前只能是播放固定的语音无法动态变化。<br>2.iOS 10以后新增了一个推送服务扩展NotificationServiceExtension。利用这个可以实现自定义语音播报。<br>当然都需要借助APNS实现远程推送才可以，本地推送无法实现。</p>
+      		<h1 id="实现微信收款的播报功能"><a href="#实现微信收款的播报功能" class="headerlink" title="实现微信收款的播报功能"></a><strong>实现微信收款的播报功能</strong></h1><h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>1.iOS 10以前只能是播放固定的语音无法动态变化。<br>2.iOS 10以后新增了一个推送服务扩展NotificationServiceExtension。利用这个可以实现自定义语音播报。<br>当然都需要借助APNS实现远程推送才可以，本地推送无法实现。</p>
 <p>开发步骤：</p>
 <ul>
 <li>利用极光推送，集成极光SDK，配置好相关证书文件，设置好代码。在极光服务器测试一下推送功能是否正常。</li>
@@ -205,6 +200,7 @@
     [self.aVSpeechSynthesizer speakUtterance:aVSpeechUtterance];   //利用这个来播放一段声音
 
     NSURLSession * session = [NSURLSession sharedSession];
+    // 配置推送图片相关
     NSString * attachmentPath = self.bestAttemptContent.userInfo[@"my-attachment"];
     //if exist
     if (attachmentPath && [attachmentPath hasSuffix:@"jpg"]) {
@@ -229,7 +225,7 @@
     //service extension sdk
     //upload to calculate delivery rate
     //please set the same AppKey as your JPush
-    [JPushNotificationExtensionService jpushSetAppkey:@"f9960e27156ae671c615e511"];
+    [JPushNotificationExtensionService jpushSetAppkey:@"appkey"];
     [JPushNotificationExtensionService jpushReceiveNotificationRequest:request with:^ {
         NSLog(@"apns upload success");
         self.contentHandler(self.bestAttemptContent);
