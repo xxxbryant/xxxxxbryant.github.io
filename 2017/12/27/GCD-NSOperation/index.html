@@ -198,13 +198,91 @@
 <blockquote>
 <p>队列可以是多个队列，如果是一个串行队列，那么使用组就没有意义了，目的是为了并发执行，但是只有一个串行队列就没有意义了。</p>
 </blockquote>
+<p><code>dispatch_group_enter(group)、dispatch_group_leave(group)</code><br>enter与leave必须同时存在，跟信号量差不多，可以理解为引用计数，当调用enter时计数加1，调用leave时计数减1，当计数为0时会调用<code>dispatch_group_notify</code>并且<code>dispatch_group_wait</code>会停止等待； 所以<strong>处理异步任务的同步非常适合使用enter与leave</strong>  </p>
+<blockquote>
+<p>例如一个页面有多个网络请求，需要这些请求全部完成以后再去刷新UI，那么此时使用enter与leave来完成这些异步任务的同步非常适合。<br>如果使用<code>dispatch_group_async</code>那么，其中的异步网络请求任务会立刻返回结果，直接进入notify与wait。 无法判断何时请求全部完成，但如果是同步任务，那么效果则一样。</p>
+</blockquote>
+<p>示例代码</p>
+<pre>- (void)group {
+    dispatch_queue_t dispatchQueue = dispatch_queue_create("ted.queue.next1", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_queue_t globalQueue = dispatch_get_global_queue(0, 0);
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    dispatch_group_async(dispatchGroup, dispatchQueue, ^(){
+        sleep(2);
+        NSLog(@"任务一完成");
+    });
+    dispatch_group_async(dispatchGroup, dispatchQueue, ^(){
+        sleep(3);
+        NSLog(@"任务二完成");
+    });   
+    dispatch_group_async(dispatchGroup, globalQueue, ^{     
+        sleep(5);
+        NSLog(@"任务三完成");
+    });  
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^(){
+        NSLog(@"notify：任务都完成了");
+    });
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{   
+        dispatch_group_wait(disgroup, dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC));
+        NSLog(@"dispatch_group_wait 结束");
+    });
+}
+输出结果为一  二  结束  三  都完成。</pre>
+
+
+<pre>- (void)group {
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{       
+        sleep(2);
+        NSLog(@"任务一完成");
+        dispatch_group_leave(group);
+    });
+    dispatch_group_enter(group);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        sleep(8);
+        NSLog(@"任务二完成");
+        dispatch_group_leave(group);
+    });
+    dispatch_group_notify(group, dispatch_get_global_queue(0, 0), ^{
+        NSLog(@"任务完成");
+    });
+} 
+以上模拟两个网络请求，会等待两个请求都完成 然后执行notify
+</pre>
+
 <h2 id="dispatch-once-创建单例"><a href="#dispatch-once-创建单例" class="headerlink" title="dispatch_once 创建单例"></a>dispatch_once 创建单例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+ (Manager *)sharedInstance &#123;</span><br><span class="line">	static Person *p = nil;</span><br><span class="line">	static dispatch_once_t once;</span><br><span class="line">	dispatch_once($once, ^&#123;</span><br><span class="line">		p = [[Person alloc] init];</span><br><span class="line">	&#125;);</span><br><span class="line">	return p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="barrier"><a href="#barrier" class="headerlink" title="barrier"></a>barrier</h2><p>一组异步并行任务，使用dispatch_async_barrier 做插入，该任务会等待前面的任务执行完成以后就去执行，然后再执行后面的任务。async的区别与sync的区别就在于是否阻塞当前线程</p>
-<p>##apply<br>多次执行一组任务，这些任务的区别差别很小，只有index的区分，不必要创建多个async的任务。</p>
-<h2 id="信号量semaphore"><a href="#信号量semaphore" class="headerlink" title="信号量semaphore"></a>信号量semaphore</h2><p>就是一种可用来控制访问资源的数量的标识，设定了一个信号量，在线程访问之前，加上信号量的处理，则可告知系统按照我们指定的信号量数量来执行多个线程。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//crate的value表示，最多几个资源可访问</span><br><span class="line">dispatch_semaphore_t semaphore = dispatch_semaphore_create(2);</span><br><span class="line">dispatch_queue_t quene = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line"></span><br><span class="line">//任务1</span><br><span class="line">dispatch_async(quene, ^&#123;</span><br><span class="line">	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);// 对信号量进行判读，如果&gt;=1那么可以执行然后进行减一操作，如果信号量&lt;1，那么不执行，直到信号量&gt;=1</span><br><span class="line">	NSLog(@&quot;run task 1&quot;);</span><br><span class="line">	sleep(1);</span><br><span class="line">	NSLog(@&quot;complete task 1&quot;);</span><br><span class="line">	dispatch_semaphore_signal(semaphore);    信号量进行加一操作</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//任务2</span><br><span class="line">dispatch_async(quene, ^&#123;</span><br><span class="line">	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);</span><br><span class="line">	NSLog(@&quot;run task 2&quot;);</span><br><span class="line">	sleep(1);</span><br><span class="line">	NSLog(@&quot;complete task 2&quot;);</span><br><span class="line">	dispatch_semaphore_signal(semaphore);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//任务3</span><br><span class="line">dispatch_async(quene, ^&#123;</span><br><span class="line">	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);</span><br><span class="line">	NSLog(@&quot;run task 3&quot;);</span><br><span class="line">	sleep(1);</span><br><span class="line">	NSLog(@&quot;complete task 3&quot;);</span><br><span class="line">	dispatch_semaphore_signal(semaphore);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>利用信号量的知识，可以做到，将一个异步的任务，做到同步处理。<br>例如在一个页面中，有多个网络请求，需要多个网络请求同时请求完毕以后，再去执行UI绘制，但是无法知晓这几个异步请求合适完成，故而可以使用信号量，将每个请求都封装成一个同步任务。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);</span><br><span class="line">networkRequest : successBlock&#123;</span><br><span class="line">dispatch_semaphore_signal(semaphore);</span><br><span class="line">&#125;) failureBlock&#123;</span><br><span class="line">	dispatch_semaphore_signal(semaphore);</span><br><span class="line">&#125;</span><br><span class="line">dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);  // 只有当走完成功或者失败以后才会执行后面的代码。</span><br></pre></td></tr></table></figure>
+<h2 id="barrier"><a href="#barrier" class="headerlink" title="barrier"></a>barrier</h2><p>一组异步并行任务，使用<code>dispatch_async_barrier</code> 做插入，该任务会等待前面的任务执行完成以后就去执行，然后再执行后面的任务。async的区别与sync的区别就在于是否阻塞当前线程</p>
+<pre>- (void)barrier {
+     dispatch_queue_t concurrentQueue = dispatch_queue_create("my.concurrent.queue", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(concurrentQueue, ^(){
+        NSLog(@"任务1");
+    });
+    dispatch_async(concurrentQueue, ^(){
+        NSLog(@"任务 2");
+    });
+    dispatch_barrier_async(concurrentQueue, ^(){
+        NSLog(@"任务barrier"); 
+    });
+    dispatch_async(concurrentQueue, ^(){
+        NSLog(@"任务3");
+    });
+    dispatch_async(concurrentQueue, ^(){
+        NSLog(@"任务4");
+    });
+}</pre>
+
+<p>上面输出结果 任务1，2一定在barrier之前，任务3，4在barrier之后。</p>
+<p>那如果使用<code>dispatch_barrier_sync</code>？</p>
+<p><pre>- (void)barrier {<br>     dispatch_queue_t concurrentQueue = dispatch_queue_create(“my.concurrent.queue”, DISPATCH_QUEUE_CONCURRENT);<br>    dispatch_async(concurrentQueue, ^(){<br>        NSLog(@”任务1”);<br>    });<br>    dispatch_async(concurrentQueue, ^(){<br>        NSLog(@”任务 2”);<br>    });<br>    dispatch_barrier_sync(concurrentQueue, ^(){<br>         sleep(10);<br>        NSLog(@”任务barrier”);<br>    });<br>    NSLog(@”222”);<br>    dispatch_async(concurrentQueue, ^(){<br>        NSLog(@”任务3”);<br>    });<br>    NSLog(@”111”);<br>    dispatch_async(concurrentQueue, ^(){<br>        NSLog(@”任务4”);<br>    });<br>}</pre><br>任务1，2一定在barrier之前，任务3，4在barrier之后。 同async一样。只是222与111的结果不一样，如果是async，那么111，222会先于barrier执行。如果是sync那么111，222会迟于barrier执行。</p>
+<p><code>dispatch_barrier_sync</code>和<code>dispatch_barrier_async</code>的不共同点：<br>&gt;<br>在将任务插入到queue的时候，dispatch_barrier_sync需要等待自己的任务结束之后才会继续程序，然后插入被写在它后面的任务，接着执行后面的任务。而dispatch_barrier_async将自己的任务插入到queue之后，不会等待自己的任务结束，它会继续把后面的任务插入到queue。async的区别与sync的区别就在于是否阻塞当前线程。</p>
+<p>##apply<br>多次执行一组任务，这些任务的区别差别很小，只有index的区分，不必要创建多个async的任务。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">NSArray *array = @[@&quot;1&quot;, @&quot;2&quot;, @&quot;3&quot;, @&quot;4&quot;, @&quot;5&quot;, @&quot;6&quot;];</span><br><span class="line">    dispatch_queue_t queue = dispatch_get_global_queue(0, 0);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        dispatch_apply([array count], queue, ^(size_t index) &#123;</span><br><span class="line">            </span><br><span class="line">            NSLog(@&quot;%zu : %@&quot;, index, [array objectAtIndex:index]);</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            NSLog(@&quot;done&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">``` </span><br><span class="line">上述代码，apply中的任务会阻塞当前线程，等待apply执行完才会执行done。 </span><br><span class="line">**目前对此理解不够**</span><br><span class="line"></span><br><span class="line">## 信号量semaphore</span><br><span class="line">就是一种可用来控制访问资源的数量的标识，设定了一个信号量，在线程访问之前，加上信号量的处理，则可告知系统按照我们指定的信号量数量来执行多个线程。</span><br></pre></td></tr></table></figure>
+<p>//crate的value表示，最多几个资源可访问<br>dispatch_semaphore_t semaphore = dispatch_semaphore_create(2);<br>dispatch_queue_t quene = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</p>
+<p>//任务1<br>dispatch_async(quene, ^{<br>    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);// 对信号量进行判读，如果&gt;=1那么可以执行然后进行减一操作，如果信号量<1，那么不执行，直到信号量>=1<br>    NSLog(@”run task 1”);<br>    sleep(1);<br>    NSLog(@”complete task 1”);<br>    dispatch_semaphore_signal(semaphore);    信号量进行加一操作<br>});</1，那么不执行，直到信号量></p>
+<p>//任务2<br>dispatch_async(quene, ^{<br>    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);<br>    NSLog(@”run task 2”);<br>    sleep(1);<br>    NSLog(@”complete task 2”);<br>    dispatch_semaphore_signal(semaphore);<br>});</p>
+<p>//任务3<br>dispatch_async(quene, ^{<br>    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);<br>    NSLog(@”run task 3”);<br>    sleep(1);<br>    NSLog(@”complete task 3”);<br>    dispatch_semaphore_signal(semaphore);<br>});<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">利用信号量的知识，可以做到，将一个异步的任务，做到同步处理。</span><br><span class="line">例如在一个页面中，有多个网络请求，需要多个网络请求同时请求完毕以后，再去执行UI绘制，但是无法知晓这几个异步请求合适完成，故而可以使用信号量，将每个请求都封装成一个同步任务。</span><br></pre></td></tr></table></figure></p>
+<p>dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);<br>networkRequest : successBlock{<br>dispatch_semaphore_signal(semaphore);<br>}) failureBlock{<br>    dispatch_semaphore_signal(semaphore);<br>}<br>dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);  // 只有当走完成功或者失败以后才会执行后面的代码。<br>```</p>
 <p>然后将多个任务请求都用信号量处理，然后将其放到组队列中，当全部完成时，notify函数便可以执行。</p>
 <h1 id="NSOperation"><a href="#NSOperation" class="headerlink" title="NSOperation"></a>NSOperation</h1><p>NSOperation 可以用于创建一个任务，所创建的任务可以被取消。<br>NSOperation是一个基类，有两种子类NSBlockOperation，NSInvocationOperation一种是Block的形式一种是target，action的形式。<br>NSOperation创建的任务会被默认的添加到主线程当中去。然后start这个任务。<br>NSOperation有三种属性isExecuted、isFinished和 isCancelled，可以通过KVO进行属性的观察。<br>NSOperationQueue可以设置最大并发数，如果最大并发数设置为1，那么就被放到主线程中执行，如果大于一那么就会开启子线程。<br>如果手动创建队列，那么[queue addOperation:operation]会自动帮助start这个任务。<br>任务之间可以添加依赖，如果互相依赖那么就会造成死锁</p>
 <p>#NSOperation与GCD的区别与使用</p>
