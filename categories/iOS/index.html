@@ -6,21 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://github.com/xxxbryant/xxxbryant.github.io.git">
-  <title>iOS基础-Push&amp;Pop | XXXZQBryant&#39;s BLOG</title>
+  <title>Category: iOS | XXXZQBryant&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Push &amp;amp; Pop在研究自定义导航栏时，发现的这一系列问题。  项目中一些不太好的写法改正 侧滑返回手势失效的问题 Push &amp;amp; Pop 动画效果异常的问题">
-<meta property="og:type" content="article">
-<meta property="og:title" content="iOS基础-Push&amp;Pop">
-<meta property="og:url" content="https://github.com/xxxbryant/xxxbryant.github.io.git/2017/12/25/iOS基础-Push-Pop/index.html">
+  <meta name="description" content="记录">
+<meta property="og:type" content="website">
+<meta property="og:title" content="XXXZQBryant&#39;s BLOG">
+<meta property="og:url" content="https://github.com/xxxbryant/xxxbryant.github.io.git/categories/iOS/index.html">
 <meta property="og:site_name" content="XXXZQBryant&#39;s BLOG">
-<meta property="og:description" content="Push &amp;amp; Pop在研究自定义导航栏时，发现的这一系列问题。  项目中一些不太好的写法改正 侧滑返回手势失效的问题 Push &amp;amp; Pop 动画效果异常的问题">
+<meta property="og:description" content="记录">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4039772-481066596c6e4a80.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2021-01-04T07:48:45.028Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS基础-Push&amp;Pop">
-<meta name="twitter:description" content="Push &amp;amp; Pop在研究自定义导航栏时，发现的这一系列问题。  项目中一些不太好的写法改正 侧滑返回手势失效的问题 Push &amp;amp; Pop 动画效果异常的问题">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/4039772-481066596c6e4a80.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="XXXZQBryant&#39;s BLOG">
+<meta name="twitter:description" content="记录">
   
     <link rel="alternative" href="/atom.xml" title="XXXZQBryant&#39;s BLOG" type="application/atom+xml">
   
@@ -182,91 +179,37 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-iOS基础-Push-Pop" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      iOS基础-Push&amp;Pop
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2018/02/23/RxSwift-Moya-HandyJSON/" class="archive-article-date">
+  	<time datetime="2018-02-23T01:47:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-23</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/02/23/RxSwift-Moya-HandyJSON/">RxSwift + Moya + HandyJSON</a>
     </h1>
   
 
-        
-        <a href="/2017/12/25/iOS基础-Push-Pop/" class="archive-article-date">
-  	<time datetime="2017-12-25T06:25:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Push-amp-Pop"><a href="#Push-amp-Pop" class="headerlink" title="Push &amp; Pop"></a>Push &amp; Pop</h1><p>在研究自定义导航栏时，发现的这一系列问题。</p>
-<ul>
-<li>项目中一些不太好的写法改正</li>
-<li>侧滑返回手势失效的问题</li>
-<li>Push &amp; Pop 动画效果异常的问题</li>
-</ul>
-<a id="more"></a>
-<h2 id="项目中一些代码的改正"><a href="#项目中一些代码的改正" class="headerlink" title="项目中一些代码的改正"></a>项目中一些代码的改正</h2><p>1.通常在一个项目中，是需要自定义一个导航栏的基类来管理导航栏的。所以：继承 UINavigationController 创建 HDNavigationViewController，几个 TabbarVC 的导航栏都使用 HDNavigationViewController。重写 UINavigationController 的 push 方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated &#123;</span><br><span class="line">	if (self.childViewControllers.count==1) &#123;</span><br><span class="line">		viewController.hidesBottomBarWhenPushed = YES; //viewController是将要被push的控制器</span><br><span class="line">	&#125;</span><br><span class="line">	[super pushViewController:viewController animated:animated];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样写保证从 RootVCpush 的时候，将 tabbar 隐藏掉。不必再每次要 push 到下一个页面的时候都写</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.tabBarController.tabBar.hidden = YES;</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">viewController.hidesBottomBarWhenPushed = YES; //viewController是将要被push的控制器</span><br></pre></td></tr></table></figure>
-<h2 id="侧滑返回手势失效的问题"><a href="#侧滑返回手势失效的问题" class="headerlink" title="侧滑返回手势失效的问题"></a>侧滑返回手势失效的问题</h2><p>在导航栏中，如果自定义导航栏并且修改了 leftBarButtonItem，或者将导航栏隐藏，那么将会导致侧滑返回失效，为了解决这一问题，可在基类控制器的- viewWillAppear 方法里面中将侧滑手势的代理重新设置为当前 VC 即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br></pre></td></tr></table></figure>
-<p>但这样会带来一些问题，稍后再说这个问题，先说如果不采用这种方式，该如何恢复侧滑返回手势。</p>
-<ul>
-<li>为了不让 pop 代理失效，如果导航栏左侧的只是一个返回按钮，那么可以修改导航栏的 backBarButtonItem 来修改。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController.navigationBar setBackIndicatorImage:[UIImage imageNamed:@&quot;nav_back&quot;]];</span><br><span class="line">[self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@&quot;nav_back&quot;]];</span><br><span class="line">UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@&quot;&quot; style:UIBarButtonItemStylePlain target:nil action:nil];</span><br><span class="line">self.navigationItem.backBarButtonItem = backItem;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>某些需要导航栏隐藏的界面可以选择使用，只将 navigationBar 隐藏，而不是整个导航栏。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.navigationBar.hidden = YES;</span><br></pre></td></tr></table></figure>
-<p>上面两种方式，虽然可以实现侧滑返回，但都有一些局限性或者无法实现需求。下面将介绍，如何使用 leftBarButtonItem 或者隐藏导航栏同时不让侧滑手势失效，即解决设置导航栏手势代理所带来的一些问题。</p>
-<h3 id="设置手势代理的问题"><a href="#设置手势代理的问题" class="headerlink" title="设置手势代理的问题"></a>设置手势代理的问题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br></pre></td></tr></table></figure>
-<p>如果在基类 VC 中设置这个导航栏，那么处于根控制器下的 VC 也具有右滑手势，但因为是根控制器，所以没有手势无效，但如果在改控制器视图下，在边缘区域右滑，那么将造成页面卡死状态，无法再点击其他内容，按下 home 键以后再重新打开，会出现各种奇怪的 bug。为了解决这一问题，就需要将根视图的手势给去掉。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line">    if (self == [self.navigationController.viewControllers firstObject]) &#123;</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.enabled = NO;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.enabled = YES;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在基类中，判断是否是根控制器，如果是，那么禁止该手势否则打开。</p>
-<h2 id="Push-amp-Pop-动画效果异常的问题"><a href="#Push-amp-Pop-动画效果异常的问题" class="headerlink" title="Push &amp; Pop 动画效果异常的问题"></a>Push &amp; Pop 动画效果异常的问题</h2><p>1.因为有一些界面的导航栏差异性较大，我的通常做法是，将导航栏隐藏，然后自定义一个符合要求的 view 来作为导航栏的 navigationBar。如果使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.navigationBarHidden = YES;</span><br></pre></td></tr></table></figure>
-<p>这样的效果能够满足需求，但是如果加入了侧滑手势之后，在侧滑返回的时候，就会出现一个黑条<br>为了解决这个问题，可在基类的- viewWillDisappear 方法中，添加下面这句代码即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br></pre></td></tr></table></figure>
-<p>保证返回时隐藏。 同时由于页面较为复杂可能存在多种 push 情况，例如<br><img src="http://upload-images.jianshu.io/upload_images/4039772-481066596c6e4a80.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>A-&gt;B 需要在 AB 的- viewWillAppear 方法设置<br>[self.navigationController setNavigationBarHidden:YES animated:YES];<br>B-&gt;D 同 A-B<br>B-&gt;E 需要在 E 的- viewWillAppear 方法中设置<br>[self.navigationController setNavigationBarHidden:NO animated:YES];</p>
-<p>A’-&gt;B 需要在 A’的 viewWillAppear 方法中设置<br>[self.navigationController setNavigationBarHidden:NO animated:YES];<br>在 B 的- viewWillAppear 方法设置<br>[self.navigationController setNavigationBarHidden:YES animated:YES];</p>
-<p>A’-C 则什么都不需要设置，或者设置为<br>self.navigationController setNavigationBarHidden:NO animated:YES];</p>
-<p>所以我想的是在基类中，添加一个 BOOL 属性为是否显示导航栏，如果需要隐藏某个 VC，那么在该 VC 的 viewdidload 方法中将此 BOOL 属性置为 YES。在基类中的- viewWillAppear 方法中可以这样写，_isHideNav 就是该 BOOL 属性。同时为了解决 pop 手势失效的问题，可在隐藏导航栏的地方将代理设置一下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (_isHideNav) &#123;</span><br><span class="line">	[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">	[self.navigationController setNavigationBarHidden:NO animated:animated];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其中 animated 涉及到 push 与 pop 时的过渡动画效果是否显示。<br>如果<br>[self.navigationController setNavigationBarHidden:YES animated:NO]; 那么从<br>显示 pop 隐藏 ，显示 push 隐藏 时会有黑色的条。即提前消失。 其他情况无异常。</p>
-<p>如果<br>[self.navigationController setNavigationBarHidden:NO animated:NO]; 那么从<br>隐藏 pop 显示 ，隐藏 push 显示 时导航条会提前显示出来。</p>
-<h3 id="透明导航栏的处理（未完待续）"><a href="#透明导航栏的处理（未完待续）" class="headerlink" title="透明导航栏的处理（未完待续）"></a>透明导航栏的处理（未完待续）</h3><p>还有一个问题：如果将某一个页面的导航条设置为透明，就会有一些奇怪的东西。push 到透明的条时，会突然变黑。或 Pop 时突然出现，为了解决这个问题，可以利用方法交换，交换滑动的进度方法，在此拦截进度，将透明度变换设置为渐变的效果。</p>
-<h3 id="一些发现"><a href="#一些发现" class="headerlink" title="一些发现"></a>一些发现</h3><p>研究的过程中，发现的问题。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">self.navigationController.navigationBar.hidden = YES;</span><br></pre></td></tr></table></figure>
-<p>这两句话什么区别？</p>
-<p>一个是针对导航栏的，一个是针对 NavigationBar 的。隐藏导航栏会导致侧滑手势失效，隐藏 NavigationBar 则不会导致侧滑手势失效。另外，<br>self.navigationController setNavigationBarHidden:NO animated:YES]; 这个方法还做了一些更多的操作。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如何做到兼顾隐藏导航栏保持侧滑返回手势，以及良好的切换动画效果。 在基类控制器中写上如下代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewWillAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewWillAppear:animated];</span><br><span class="line">    if (_isHideNav) &#123;</span><br><span class="line">        [self.navigationController setNavigationBarHidden:YES animated:animated];</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        [self.navigationController setNavigationBarHidden:NO animated:animated];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)viewDidAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line">    if (self == [self.navigationController.viewControllers firstObject]) &#123;</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.enabled = NO;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        self.navigationController.interactivePopGestureRecognizer.enabled = YES;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果某个 VC 需要隐藏导航栏，只需要将设置_isHideNav 属性为 YES 即可。</p>
-<h2 id="思考-🤔"><a href="#思考-🤔" class="headerlink" title="思考 🤔"></a>思考 🤔</h2><ul>
-<li>利用方法交换，更改手势，无需重新设置</li>
-</ul>
-<p>self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;</p>
-<ul>
-<li>透明度渐变式的过渡动画</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
+        <div class="article-info info-on-right">
+          
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -279,73 +222,179 @@ var _hmt = _hmt || [];
 	</div>
 
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
   
-<nav id="article-nav">
-  
-    <a href="/2017/12/27/GCD-NSOperation/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          GCD&amp;NSOperation
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/12/25/写此博客的目的/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">写此博客的目的</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2018/01/09/KVO原理与自定义实现/" class="archive-article-date">
+  	<time datetime="2018-01-09T07:23:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-09</time>
+</a>
         </div>
-        
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Push-amp-Pop"><span class="toc-number">1.</span> <span class="toc-text"><a href="#Push-amp-Pop" class="headerlink" title="Push &amp; Pop"></a>Push &amp; Pop</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#项目中一些代码的改正"><span class="toc-number">1.1.</span> <span class="toc-text"><a href="#&#x9879;&#x76EE;&#x4E2D;&#x4E00;&#x4E9B;&#x4EE3;&#x7801;&#x7684;&#x6539;&#x6B63;" class="headerlink" title="&#x9879;&#x76EE;&#x4E2D;&#x4E00;&#x4E9B;&#x4EE3;&#x7801;&#x7684;&#x6539;&#x6B63;"></a>&#x9879;&#x76EE;&#x4E2D;&#x4E00;&#x4E9B;&#x4EE3;&#x7801;&#x7684;&#x6539;&#x6B63;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#侧滑返回手势失效的问题"><span class="toc-number">1.2.</span> <span class="toc-text"><a href="#&#x4FA7;&#x6ED1;&#x8FD4;&#x56DE;&#x624B;&#x52BF;&#x5931;&#x6548;&#x7684;&#x95EE;&#x9898;" class="headerlink" title="&#x4FA7;&#x6ED1;&#x8FD4;&#x56DE;&#x624B;&#x52BF;&#x5931;&#x6548;&#x7684;&#x95EE;&#x9898;"></a>&#x4FA7;&#x6ED1;&#x8FD4;&#x56DE;&#x624B;&#x52BF;&#x5931;&#x6548;&#x7684;&#x95EE;&#x9898;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#设置手势代理的问题"><span class="toc-number">1.2.1.</span> <span class="toc-text"><a href="#&#x8BBE;&#x7F6E;&#x624B;&#x52BF;&#x4EE3;&#x7406;&#x7684;&#x95EE;&#x9898;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x624B;&#x52BF;&#x4EE3;&#x7406;&#x7684;&#x95EE;&#x9898;"></a>&#x8BBE;&#x7F6E;&#x624B;&#x52BF;&#x4EE3;&#x7406;&#x7684;&#x95EE;&#x9898;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Push-amp-Pop-动画效果异常的问题"><span class="toc-number">1.3.</span> <span class="toc-text"><a href="#Push-amp-Pop-&#x52A8;&#x753B;&#x6548;&#x679C;&#x5F02;&#x5E38;&#x7684;&#x95EE;&#x9898;" class="headerlink" title="Push &amp; Pop &#x52A8;&#x753B;&#x6548;&#x679C;&#x5F02;&#x5E38;&#x7684;&#x95EE;&#x9898;"></a>Push &amp; Pop &#x52A8;&#x753B;&#x6548;&#x679C;&#x5F02;&#x5E38;&#x7684;&#x95EE;&#x9898;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#透明导航栏的处理（未完待续）"><span class="toc-number">1.3.1.</span> <span class="toc-text"><a href="#&#x900F;&#x660E;&#x5BFC;&#x822A;&#x680F;&#x7684;&#x5904;&#x7406;&#xFF08;&#x672A;&#x5B8C;&#x5F85;&#x7EED;&#xFF09;" class="headerlink" title="&#x900F;&#x660E;&#x5BFC;&#x822A;&#x680F;&#x7684;&#x5904;&#x7406;&#xFF08;&#x672A;&#x5B8C;&#x5F85;&#x7EED;&#xFF09;"></a>&#x900F;&#x660E;&#x5BFC;&#x822A;&#x680F;&#x7684;&#x5904;&#x7406;&#xFF08;&#x672A;&#x5B8C;&#x5F85;&#x7EED;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些发现"><span class="toc-number">1.3.2.</span> <span class="toc-text"><a href="#&#x4E00;&#x4E9B;&#x53D1;&#x73B0;" class="headerlink" title="&#x4E00;&#x4E9B;&#x53D1;&#x73B0;"></a>&#x4E00;&#x4E9B;&#x53D1;&#x73B0;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">1.4.</span> <span class="toc-text"><a href="#&#x603B;&#x7ED3;" class="headerlink" title="&#x603B;&#x7ED3;"></a>&#x603B;&#x7ED3;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#思考-🤔"><span class="toc-number">1.5.</span> <span class="toc-text"><a href="#&#x601D;&#x8003;-&#x1F914;" class="headerlink" title="&#x601D;&#x8003; &#x1F914;"></a>&#x601D;&#x8003; &#x1F914;</span></a></li></ol></li></ol>
-                    </div>
-                </span>
-            </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/01/09/KVO原理与自定义实现/">KVO原理与自定义实现</a>
+    </h1>
+  
+
+        <div class="article-info info-on-right">
+          
+          
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
         </div>
-        
-    </div>
-</aside>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2018/01/04/推送自定义语音播报/" class="archive-article-date">
+  	<time datetime="2018-01-04T08:57:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-04</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/01/04/推送自定义语音播报/">推送自定义语音播报</a>
+    </h1>
+  
+
+        <div class="article-info info-on-right">
+          
+          
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
 
+        </div>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+    
+    
+      
+        </div></section>
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/12/27/GCD-NSOperation/" class="archive-article-date">
+  	<time datetime="2017-12-27T08:32:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-27</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/12/27/GCD-NSOperation/">GCD&amp;NSOperation</a>
+    </h1>
+  
 
+        <div class="article-info info-on-right">
+          
+          
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+        </div>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
   
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/12/25/iOS基础-Push-Pop/" class="archive-article-date">
+  	<time datetime="2017-12-25T06:25:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-25</time>
+</a>
+        </div>
+    	 
   
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/12/25/iOS基础-Push-Pop/">iOS基础-Push&amp;Pop</a>
+    </h1>
   
 
+        <div class="article-info info-on-right">
+          
+          
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+        </div>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+  
+    </div></section>
   
 
-  
+    
 
 
           </div>
@@ -369,10 +418,10 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
-		isCategory: false,
+		isCategory: true,
 		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",
